@@ -129,16 +129,18 @@ const unit = {
 	 * @Author   MuTong
 	 * @DateTime 2019-01-11
 	 * @param    XX年XX月XX日 转化为 XX-XX-XX
-	 * @param    {[String]}   str [带有年月日的时间字符串]
-	 * @return   {[type]}         [带有-的时间字符串]
+	 * @param    {[String]}   str    [带有年月日的时间字符串]
+	 * @param    {[String]}   symbol [间隔符]
+	 * @return   {[type]}            [转化后的时间字符串]
 	 */
-	timeToggle (str) {
+	timeToggle (str, symbol) {
 		var newStr = '';
+		var symbol = symbol || '-';
 
 		if(!!str && typeof str == 'string'){
 			for(var i = 0; i < str.length; i++){
 				if(str[i] == '年' || str[i] == '月'){
-					newStr += '-'
+					newStr += symbol
 				}else if(str[i] == '日'){
 
 				}else{
@@ -150,6 +152,59 @@ const unit = {
 		}
 
 		return newStr;
+	},
+	// 数据处理 - 数字补0
+	getNow(s) {
+		return s < 10 ? '0' + s: s;
+	},
+	// 数据处理 - 数据判断
+	hasJsonTrue(data){
+		if(!!data){
+			if(data.constructor == Array){
+				if(data.length > 0){
+					return true;
+				}else{
+					return false;
+				}
+			}
+			else if(data.constructor == String){
+				if(data == '' || /^\s+$/.test(data)){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			else if(data.constructor == Number){
+				return true;
+			}
+			else if(data.constructor == Object){
+				return true;
+			}
+			else if(data.constructor == Function){
+				return true;
+			}
+		}else{
+			return false;
+		}
+	},
+	// 去掉字符串收尾空格
+	delBlank(s){
+		return s.replace(/(^\s*)|(\s*$)/g, "");
+	},
+	// 滚动距离判断
+	// $ele 	滚动元素
+	// $scroll 	滚动距离元素
+	is_scroll($ele, $scroll) {
+		var $ele = $ele || $('html');
+		var $scroll = $scroll || $('html');
+		var scrollTop = $ele.scrollTop();
+		var offsetTop = $scroll.offset().top;
+
+		if (scrollTop > offsetTop) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 
